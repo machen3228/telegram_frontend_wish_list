@@ -134,7 +134,7 @@ function App() {
                 </div>
                 {gift.url && (
                   <a href={gift.url} target="_blank" rel="noopener noreferrer" className="gift-url">
-                    {gift.url}
+                    🔗 Ссылка
                   </a>
                 )}
                 <div className="gift-card-details">
@@ -146,6 +146,9 @@ function App() {
                   )}
                 </div>
                 {gift.note && <p className="gift-note">{gift.note}</p>}
+                <p className="gift-created-at">
+                  Добавлен: {new Date(gift.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </p>
                 {!gift.is_reserved ? (
                   <button
                     className="gift-reserve-btn"
