@@ -20,3 +20,25 @@ export interface TelegramInitData {
   username?: string
   photo_url?: string
 }
+
+export interface Gift {
+  id: number
+  user_id: number
+  name: string
+  url: string | null
+  wish_rate: number | null
+  price: number | null
+  note: string | null
+  created_at: string
+  updated_at: string
+  is_reserved: boolean
+  reserved_by: number | null
+}
+
+export interface GiftCreateDTO {
+  name: string
+  url?: string | null
+  wish_rate?: number | null
+  price?: number | null
+  note?: string | null
+}
