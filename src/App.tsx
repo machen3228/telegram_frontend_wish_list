@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { login, getMe, getMyGifts, createGift, deleteGift, reserveGift, cancelReservation } from './api/client'
 import type { User, Gift, GiftCreateDTO } from './api/types'
 import { GiftForm } from './components/GiftForm'
+
+type SortOption = 'newest' | 'oldest' | 'price_desc' | 'price_asc' | 'wish_rate_desc'
 
 function App() {
   const [user, setUser] = useState<User | null>(null)
@@ -9,6 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const [sortBy, setSortBy] = useState<SortOption>('newest')
 
   const loadGifts = async (userId: number) => {
     const giftsData = await getMyGifts(userId)
@@ -31,6 +34,22 @@ function App() {
 
     initUser()
   }, [])
+
+  const sortedGifts = useMemo(() => {
+    const sorted = [...gifts]
+    switch (sortBy) {
+      case 'newest':
+        return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      case 'oldest':
+        return sorted.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+      case 'price_desc':
+        return sorted.sort((a, b) => (b.price ?? -Infinity) - (a.price ?? -Infinity))
+      case 'price_asc':
+        return sorted.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))
+      case 'wish_rate_desc':
+        return sorted.sort((a, b) => (b.wish_rate ?? -Infinity) - (a.wish_rate ?? -Infinity))
+    }
+  }, [gifts, sortBy])
 
   const handleAddGift = async (data: GiftCreateDTO) => {
     await createGift(data)
@@ -109,20 +128,33 @@ function App() {
       <div className="gifts-section">
         <div className="gifts-header">
           <h2>Мои подарки</h2>
-          <button className="add-gift-btn" onClick={() => setShowForm(true)}>
-            Добавить
-          </button>
+          <div className="gifts-header-actions">
+            <select
+              className="sort-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+            >
+              <option value="newest">Сначала новые</option>
+              <option value="oldest">Сначала старые</option>
+              <option value="price_desc">Сначала дороже</option>
+              <option value="price_asc">Сначала дешевле</option>
+              <option value="wish_rate_desc">Сначала желанные</option>
+            </select>
+            <button className="add-gift-btn" onClick={() => setShowForm(true)}>
+              Добавить
+            </button>
+          </div>
         </div>
-        {gifts.length === 0 ? (
+        {sortedGifts.length === 0 ? (
           <p className="no-gifts">У вас пока нет подарков</p>
         ) : (
           <div className="gifts-list">
-            {gifts.map((gift) => (
+            {sortedGifts.map((gift) => (
               <div key={gift.id} className={`gift-card ${gift.is_reserved ? 'gift-card--reserved' : ''}`}>
+                {gift.is_reserved && <span className="gift-reserved">Забронировано</span>}
                 <div className="gift-card-header">
                   <h3 className="gift-name">{gift.name}</h3>
                   <div className="gift-card-actions">
-                    {gift.is_reserved && <span className="gift-reserved">Забронировано</span>}
                     <button
                       className="gift-delete-btn"
                       onClick={() => handleDeleteGift(gift.id)}
@@ -142,7 +174,7 @@ function App() {
                     <span className="gift-wish-rate">★ {gift.wish_rate}/10</span>
                   )}
                   {gift.price !== null && (
-                    <span className="gift-price">{(gift.price / 100).toLocaleString('ru-RU', { minimumFractionDigits: 2 })} ₽</span>
+                    <span className="gift-price">{(gift.price / 100).toLocaleString('ru-RU', { minimumFractionDigits: 0 })} ₽</span>
                   )}
                 </div>
                 {gift.note && <p className="gift-note">{gift.note}</p>}
