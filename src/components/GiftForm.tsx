@@ -11,7 +11,7 @@ const LIMITS = {
   url: 300,
   wishRateMin: 1,
   wishRateMax: 10,
-  priceMax: 99999999.99,
+  priceMax: 999999,
   note: 1000,
 }
 
@@ -52,7 +52,7 @@ export function GiftForm({ onSubmit, onCancel }: GiftFormProps) {
       <h3>Новый подарок</h3>
 
       <div className="form-field">
-        <label htmlFor="gift-name">Название *</label>
+        <label htmlFor="gift-name">Название</label>
         <input
           id="gift-name"
           type="text"
@@ -99,10 +99,10 @@ export function GiftForm({ onSubmit, onCancel }: GiftFormProps) {
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            min={0}
+            min={1}
             max={LIMITS.priceMax}
-            step={0.01}
-            placeholder="0.00"
+            step={1}
+            placeholder="0"
           />
         </div>
       </div>
