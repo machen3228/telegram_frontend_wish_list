@@ -52,7 +52,7 @@ export function GiftForm({ onSubmit, onCancel }: GiftFormProps) {
       <h3>Новый подарок</h3>
 
       <div className="form-field">
-        <label htmlFor="gift-name">Название *</label>
+        <label htmlFor="gift-name">Название</label>
         <input
           id="gift-name"
           type="text"

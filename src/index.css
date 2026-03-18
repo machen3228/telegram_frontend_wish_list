@@ -401,7 +401,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 8px;
   z-index: 1000;
 }
 
@@ -471,10 +471,12 @@ body {
 .form-row {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .form-row .form-field {
   flex: 1;
+  min-width: 140px;
 }
 
 .form-actions {

@@ -17,140 +17,56 @@ function setToken(token: string): void {
   localStorage.setItem('token', token)
 }
 
+async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
+  const token = getToken()
+  if (!token) throw new Error('No token available. Please login first.')
+  const response = await fetch(`${API_BASE_URL}${url}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...options.headers,
+    },
+  })
+  if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+  return response
+}
+
 export async function login(): Promise<TokenResponse> {
   const response = await fetch(`${API_BASE_URL}/users/auth-dev`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(MOCK_USER),
   })
-
-  if (!response.ok) {
-    throw new Error(`Login failed: ${response.status}`)
-  }
-
+  if (!response.ok) throw new Error(`Login failed: ${response.status}`)
   const data: TokenResponse = await response.json()
   setToken(data.access_token)
   return data
 }
 
 export async function getMe(): Promise<User> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/users/me`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch user: ${response.status}`)
-  }
-
-  return response.json()
+  return (await authFetch('/users/me')).json()
 }
 
 export async function getMyGifts(userId: number): Promise<Gift[]> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/gifts/user/${userId}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch gifts: ${response.status}`)
-  }
-
-  return response.json()
+  return (await authFetch(`/gifts/user/${userId}`)).json()
 }
 
-export async function createGift(data: GiftCreateDTO): Promise<{ tg_id: number }> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/gifts`, {
+export async function createGift(data: GiftCreateDTO): Promise<void> {
+  await authFetch('/gifts', {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
-
-  if (!response.ok) {
-    throw new Error(`Failed to create gift: ${response.status}`)
-  }
-
-  return response.json()
 }
 
 export async function deleteGift(giftId: number): Promise<void> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/gifts/${giftId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to delete gift: ${response.status}`)
-  }
+  await authFetch(`/gifts/${giftId}`, { method: 'DELETE' })
 }
 
 export async function reserveGift(giftId: number): Promise<void> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/gifts/${giftId}/reserve`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to reserve gift: ${response.status}`)
-  }
+  await authFetch(`/gifts/${giftId}/reserve`, { method: 'POST' })
 }
 
 export async function cancelReservation(giftId: number): Promise<void> {
-  const token = getToken()
-
-  if (!token) {
-    throw new Error('No token available. Please login first.')
-  }
-
-  const response = await fetch(`${API_BASE_URL}/gifts/${giftId}/reserve`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to cancel reservation: ${response.status}`)
-  }
+  await authFetch(`/gifts/${giftId}/reserve`, { method: 'DELETE' })
 }
