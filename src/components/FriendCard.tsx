@@ -1,4 +1,5 @@
 import type { Friend } from '../api/types'
+import { Avatar } from './Avatar'
 
 interface FriendCardProps {
   friend: Friend
@@ -33,13 +34,7 @@ export function FriendCard({ friend, isActive, onActivate, onRemove, onClick }: 
       onClick={handleCardClick}
     >
       <div className="friend-card-avatar-wrap">
-        {avatar_url ? (
-          <img src={avatar_url} alt={displayName} className="friend-avatar" />
-        ) : (
-          <div className="friend-avatar friend-avatar-placeholder">
-            {first_name?.[0] ?? '?'}
-          </div>
-        )}
+        <Avatar avatarUrl={avatar_url} initial={first_name?.[0] ?? '?'} alt={displayName} className="friend-avatar" />
       </div>
 
       <div className="friend-card-info">

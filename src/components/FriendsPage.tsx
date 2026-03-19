@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { Friend } from '../api/types'
 import { useFriends } from '../hooks/useFriends'
 import { FriendRequestCard } from './FriendRequestCard'
 import { FriendCard } from './FriendCard'
@@ -6,9 +7,10 @@ import { AddFriendForm } from './AddFriendForm'
 
 interface FriendsPageProps {
   onBack: () => void
+  onFriendClick: (friend: Friend) => void
 }
 
-export function FriendsPage({ onBack }: FriendsPageProps) {
+export function FriendsPage({ onBack, onFriendClick }: FriendsPageProps) {
   const { requests, friends, error, accept, reject, remove, addFriend } = useFriends()
   const [showAddForm, setShowAddForm] = useState(false)
   const [activeCardId, setActiveCardId] = useState<number | null>(null)
@@ -64,7 +66,7 @@ export function FriendsPage({ onBack }: FriendsPageProps) {
               isActive={activeCardId === f.tg_id}
               onActivate={setActiveCardId}
               onRemove={remove}
-              onClick={() => { /* stub: future friend profile page */ }}
+              onClick={() => onFriendClick(f)}
             />
           ))
         )}
