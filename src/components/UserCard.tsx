@@ -1,4 +1,5 @@
 import type { User } from '../api/types'
+import { Avatar } from './Avatar'
 
 interface UserCardProps {
   user: User
@@ -9,13 +10,7 @@ export function UserCard({ user }: UserCardProps) {
 
   return (
     <div className="user-card">
-      {user.avatar_url ? (
-        <img src={user.avatar_url} alt="Avatar" className="avatar" />
-      ) : (
-        <div className="avatar avatar-placeholder">
-          {user.first_name?.[0] ?? '?'}
-        </div>
-      )}
+      <Avatar avatarUrl={user.avatar_url} initial={user.first_name?.[0] ?? '?'} />
       <h1 className="user-name">{fullName || 'Unknown User'}</h1>
       {user.tg_username && (
         <p className="user-username">@{user.tg_username}</p>
@@ -26,7 +21,7 @@ export function UserCard({ user }: UserCardProps) {
           className="copy-btn"
           onClick={() => {
             navigator.clipboard.writeText(String(user.tg_id))
-            alert('Ваш ID скопирован в буфер обмена')
+            alert('ID скопирован в буфер обмена')
           }}
         >
           📋

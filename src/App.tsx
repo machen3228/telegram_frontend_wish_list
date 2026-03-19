@@ -1,18 +1,25 @@
 import { useState } from 'react'
 import { useAuth } from './hooks/useAuth'
 import { useGifts } from './hooks/useGifts'
-import type { SortOption } from './hooks/useGifts'
-import type { GiftCreateDTO } from './api/types'
+import type { Friend, GiftCreateDTO } from './api/types'
 import { UserCard } from './components/UserCard'
 import { GiftCard } from './components/GiftCard'
 import { GiftForm } from './components/GiftForm'
+import { SortSelect } from './components/SortSelect'
 import { FriendsPage } from './components/FriendsPage'
+import { FriendProfilePage } from './components/FriendProfilePage'
 
 function App() {
   const { user, loading, error } = useAuth()
   const { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve, error: giftsError } = useGifts(user?.tg_id ?? null)
   const [showForm, setShowForm] = useState(false)
-  const [currentView, setCurrentView] = useState<'main' | 'friends'>('main')
+  const [currentView, setCurrentView] = useState<'main' | 'friends' | 'friend-profile'>('main')
+  const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null)
+
+  const handleFriendClick = (friend: Friend) => {
+    setSelectedFriend(friend)
+    setCurrentView('friend-profile')
+  }
 
   const handleAddGift = async (data: GiftCreateDTO) => {
     await addGift(data)
@@ -29,7 +36,17 @@ function App() {
   if (!user) return <div className="container">No user data</div>
 
   if (currentView === 'friends') {
-    return <FriendsPage onBack={() => setCurrentView('main')} />
+    return <FriendsPage onBack={() => setCurrentView('main')} onFriendClick={handleFriendClick} />
+  }
+
+  if (currentView === 'friend-profile' && selectedFriend) {
+    return (
+      <FriendProfilePage
+        friend={selectedFriend}
+        currentUserId={user.tg_id}
+        onBack={() => setCurrentView('friends')}
+      />
+    )
   }
 
   return (
@@ -47,17 +64,7 @@ function App() {
         <div className="gifts-header">
           <h2>Мои подарки</h2>
           <div className="gifts-header-actions">
-            <select
-              className="sort-select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-            >
-              <option value="newest">Сначала новые</option>
-              <option value="oldest">Сначала старые</option>
-              <option value="price_desc">Сначала дороже</option>
-              <option value="price_asc">Сначала дешевле</option>
-              <option value="wish_rate_desc">Сначала желанные</option>
-            </select>
+            <SortSelect value={sortBy} onChange={setSortBy} />
             <button className="add-gift-btn" onClick={() => setShowForm(true)}>
               Добавить
             </button>
