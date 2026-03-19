@@ -8,12 +8,14 @@ import { GiftForm } from './components/GiftForm'
 import { SortSelect } from './components/SortSelect'
 import { FriendsPage } from './components/FriendsPage'
 import { FriendProfilePage } from './components/FriendProfilePage'
+import { MyReservationsPage } from './components/MyReservationsPage'
+import { Modal } from './components/Modal'
 
 function App() {
   const { user, loading, error } = useAuth()
   const { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve, error: giftsError } = useGifts(user?.tg_id ?? null)
   const [showForm, setShowForm] = useState(false)
-  const [currentView, setCurrentView] = useState<'main' | 'friends' | 'friend-profile'>('main')
+  const [currentView, setCurrentView] = useState<'main' | 'friends' | 'friend-profile' | 'my-reservations'>('main')
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null)
 
   const handleFriendClick = (friend: Friend) => {
@@ -35,6 +37,10 @@ function App() {
   if (error) return <div className="container error">{error}</div>
   if (!user) return <div className="container">No user data</div>
 
+  if (currentView === 'my-reservations') {
+    return <MyReservationsPage currentUser={user} onBack={() => setCurrentView('main')} />
+  }
+
   if (currentView === 'friends') {
     return <FriendsPage onBack={() => setCurrentView('main')} onFriendClick={handleFriendClick} />
   }
@@ -54,6 +60,9 @@ function App() {
       <UserCard user={user} />
 
       <div className="main-nav">
+        <button className="nav-friends-btn" onClick={() => setCurrentView('my-reservations')}>
+          Мои брони
+        </button>
         <button className="nav-friends-btn" onClick={() => setCurrentView('friends')}>
           Друзья
         </button>
@@ -88,11 +97,9 @@ function App() {
       </div>
 
       {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <GiftForm onSubmit={handleAddGift} onCancel={() => setShowForm(false)} />
-          </div>
-        </div>
+        <Modal onClose={() => setShowForm(false)}>
+          <GiftForm onSubmit={handleAddGift} onCancel={() => setShowForm(false)} />
+        </Modal>
       )}
     </div>
   )

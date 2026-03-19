@@ -4,6 +4,8 @@ import { useFriends } from '../hooks/useFriends'
 import { FriendRequestCard } from './FriendRequestCard'
 import { FriendCard } from './FriendCard'
 import { AddFriendForm } from './AddFriendForm'
+import { Modal } from './Modal'
+import { PageHeader } from './PageHeader'
 
 interface FriendsPageProps {
   onBack: () => void
@@ -24,10 +26,7 @@ export function FriendsPage({ onBack, onFriendClick }: FriendsPageProps) {
     <div className="container">
       {error && <div className="error" style={{ marginBottom: 12 }}>Ошибка: {error}</div>}
 
-      <div className="friends-page-header">
-        <button className="back-btn" onClick={onBack}>← Назад</button>
-        <h1 className="friends-page-title">Друзья</h1>
-      </div>
+      <PageHeader title="Друзья" onBack={onBack} />
 
       {/* Friend requests section */}
       <div className="friends-section">
@@ -73,11 +72,9 @@ export function FriendsPage({ onBack, onFriendClick }: FriendsPageProps) {
       </div>
 
       {showAddForm && (
-        <div className="modal-overlay" onClick={() => setShowAddForm(false)}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <AddFriendForm onSubmit={handleAddFriend} onCancel={() => setShowAddForm(false)} />
-          </div>
-        </div>
+        <Modal onClose={() => setShowAddForm(false)}>
+          <AddFriendForm onSubmit={handleAddFriend} onCancel={() => setShowAddForm(false)} />
+        </Modal>
       )}
     </div>
   )
