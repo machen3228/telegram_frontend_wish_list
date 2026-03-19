@@ -113,3 +113,7 @@ export async function sendFriendRequest(receiverId: number): Promise<void> {
 export async function removeFriend(friendId: number): Promise<void> {
   await authFetch(`/users/me/friends/${friendId}/delete`, { method: 'DELETE' })
 }
+
+export async function getMyReservations(): Promise<Gift[]> {
+  return (await authFetch('/gifts/my/reserve')).json()
+}

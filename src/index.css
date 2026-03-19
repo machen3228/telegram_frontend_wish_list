@@ -521,11 +521,12 @@ body {
 
 /* ===== Friends Feature ===== */
 
-/* "Друзья" nav button on main page */
+/* "Друзья" / "Мои брони" nav buttons on main page */
 .main-nav {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
   margin: 12px 0 4px;
 }
 
@@ -785,6 +786,43 @@ body {
     opacity: 1;
     pointer-events: auto;
   }
+}
+
+/* Gift card owner strip (used in My Reservations page) */
+.gift-card-owner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.gift-card-owner-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.gift-card-owner-avatar-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.gift-card-owner-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* AddFriendForm — form shell reuses .gift-form; only hint is new */
