@@ -4,7 +4,7 @@ import { Avatar } from './Avatar'
 interface GiftCardProps {
   gift: Gift
   onDelete?: (id: number) => void
-  onReserve: (id: number) => void
+  onReserve?: (id: number) => void
   onCancelReserve: (id: number) => void
   isOwner?: boolean
   currentUserId?: number
@@ -69,7 +69,7 @@ export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner =
       <p className="gift-created-at">
         Добавлен: {new Date(gift.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
       </p>
-      {!gift.is_reserved ? (
+      {!gift.is_reserved && onReserve ? (
         <button className="gift-reserve-btn" onClick={() => onReserve(gift.id)}>
           Буду дарить
         </button>

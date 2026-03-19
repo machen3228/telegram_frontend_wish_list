@@ -16,12 +16,12 @@ export function useMyReservations(currentUser: User) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getMyReservations().then(setGifts).catch((e: Error) => setError(e.message))
-    getFriends().then(setFriends).catch((e: Error) => setError(e.message))
+    getMyReservations().then(setGifts).catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
+    getFriends().then(setFriends).catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
   const refresh = useCallback(() => {
-    getMyReservations().then(setGifts).catch((e: Error) => setError(e.message))
+    getMyReservations().then(setGifts).catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [])
 
   const cancelReserve = useCallback(async (giftId: number) => {

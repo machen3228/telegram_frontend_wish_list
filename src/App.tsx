@@ -9,6 +9,7 @@ import { SortSelect } from './components/SortSelect'
 import { FriendsPage } from './components/FriendsPage'
 import { FriendProfilePage } from './components/FriendProfilePage'
 import { MyReservationsPage } from './components/MyReservationsPage'
+import { Modal } from './components/Modal'
 
 function App() {
   const { user, loading, error } = useAuth()
@@ -96,11 +97,9 @@ function App() {
       </div>
 
       {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div onClick={(e) => e.stopPropagation()}>
-            <GiftForm onSubmit={handleAddGift} onCancel={() => setShowForm(false)} />
-          </div>
-        </div>
+        <Modal onClose={() => setShowForm(false)}>
+          <GiftForm onSubmit={handleAddGift} onCancel={() => setShowForm(false)} />
+        </Modal>
       )}
     </div>
   )

@@ -2,6 +2,7 @@ import { useMyReservations } from '../hooks/useMyReservations'
 import type { ReservationSortBy } from '../hooks/useMyReservations'
 import type { User } from '../api/types'
 import { GiftCard } from './GiftCard'
+import { PageHeader } from './PageHeader'
 
 interface MyReservationsPageProps {
   currentUser: User
@@ -19,10 +20,7 @@ export function MyReservationsPage({ currentUser, onBack }: MyReservationsPagePr
 
   return (
     <div className="container">
-      <div className="friends-page-header">
-        <button className="back-btn" onClick={onBack}>← Назад</button>
-        <h1 className="friends-page-title">Мои брони</h1>
-      </div>
+      <PageHeader title="Мои брони" onBack={onBack} />
 
       <div className="gifts-section">
         {error && <div className="error" style={{ marginBottom: 12 }}>Ошибка: {error}</div>}
@@ -50,7 +48,6 @@ export function MyReservationsPage({ currentUser, onBack }: MyReservationsPagePr
                 owner={owner}
                 isOwner={false}
                 currentUserId={currentUser.tg_id}
-                onReserve={() => {}}
                 onCancelReserve={cancelReserve}
               />
             ))}

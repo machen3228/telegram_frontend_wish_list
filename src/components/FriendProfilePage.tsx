@@ -3,6 +3,7 @@ import { useGifts } from '../hooks/useGifts'
 import { UserCard } from './UserCard'
 import { GiftCard } from './GiftCard'
 import { SortSelect } from './SortSelect'
+import { PageHeader } from './PageHeader'
 
 interface FriendProfilePageProps {
   friend: Friend
@@ -15,9 +16,7 @@ export function FriendProfilePage({ friend, currentUserId, onBack }: FriendProfi
 
   return (
     <div className="container">
-      <div className="friends-page-header">
-        <button className="back-btn" onClick={onBack}>← Назад</button>
-      </div>
+      <PageHeader onBack={onBack} />
 
       <UserCard user={friend} />
 
