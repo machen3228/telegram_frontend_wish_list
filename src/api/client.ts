@@ -1,6 +1,15 @@
-import type { TokenResponse, User, TelegramInitData, Gift, GiftCreateDTO } from './types'
+import type { TokenResponse, User, TelegramInitData, Gift, GiftCreateDTO, FriendRequest, Friend } from './types'
 
 const API_BASE_URL = 'http://localhost:80'
+
+export class ApiError extends Error {
+  status: number
+  constructor(status: number, message: string) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
 
 const MOCK_USER: TelegramInitData = {
   id: 12345,
@@ -19,7 +28,7 @@ function setToken(token: string): void {
 
 async function authFetch(url: string, options: RequestInit = {}): Promise<Response> {
   const token = getToken()
-  if (!token) throw new Error('No token available. Please login first.')
+  if (!token) throw new ApiError(401, 'No token available. Please login first.')
   const response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
     headers: {
@@ -27,7 +36,17 @@ async function authFetch(url: string, options: RequestInit = {}): Promise<Respon
       ...options.headers,
     },
   })
-  if (!response.ok) throw new Error(`Request failed: ${response.status}`)
+  if (!response.ok) {
+    if (response.status === 401) localStorage.removeItem('token')
+    let detail = `Request failed: ${response.status}`
+    try {
+      const body: unknown = await response.json()
+      if (body && typeof body === 'object' && 'detail' in body && typeof body.detail === 'string') {
+        detail = body.detail
+      }
+    } catch { /* ignore parse errors */ }
+    throw new ApiError(response.status, detail)
+  }
   return response
 }
 
@@ -69,4 +88,28 @@ export async function reserveGift(giftId: number): Promise<void> {
 
 export async function cancelReservation(giftId: number): Promise<void> {
   await authFetch(`/gifts/${giftId}/reserve`, { method: 'DELETE' })
+}
+
+export async function getFriendRequests(): Promise<FriendRequest[]> {
+  return (await authFetch('/users/me/friend-requests')).json()
+}
+
+export async function acceptFriendRequest(senderId: number): Promise<void> {
+  await authFetch(`/users/me/friends/${senderId}/accept`, { method: 'PATCH' })
+}
+
+export async function rejectFriendRequest(senderId: number): Promise<void> {
+  await authFetch(`/users/me/friends/${senderId}/reject`, { method: 'PATCH' })
+}
+
+export async function getFriends(): Promise<Friend[]> {
+  return (await authFetch('/users/me/friends')).json()
+}
+
+export async function sendFriendRequest(receiverId: number): Promise<void> {
+  await authFetch(`/users/me/friends/${receiverId}/request`, { method: 'POST' })
+}
+
+export async function removeFriend(friendId: number): Promise<void> {
+  await authFetch(`/users/me/friends/${friendId}/delete`, { method: 'DELETE' })
 }

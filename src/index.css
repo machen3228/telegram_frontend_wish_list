@@ -518,3 +518,279 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ===== Friends Feature ===== */
+
+/* "Друзья" nav button on main page */
+.main-nav {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px 0 4px;
+}
+
+.nav-friends-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.nav-friends-btn:hover {
+  opacity: 0.9;
+}
+
+/* FriendsPage header */
+.friends-page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.friends-page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: #667eea;
+  cursor: pointer;
+  padding: 6px 0;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.back-btn:hover {
+  opacity: 0.75;
+}
+
+/* Friends section card (mirrors .gifts-section) */
+.friends-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.friends-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.friends-section-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.no-friends {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 20px 0;
+  margin: 0;
+}
+
+/* FriendRequestCard */
+.friend-request-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.friend-request-card:last-child {
+  border-bottom: none;
+}
+
+.friend-request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.friend-request-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.friend-request-username {
+  font-size: 13px;
+  color: #0088cc;
+}
+
+.friend-request-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-accept {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-accept:hover {
+  opacity: 0.9;
+}
+
+.btn-reject {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-reject:hover {
+  background: #fee2e2;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* FriendCard */
+.friend-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.friend-card:last-child {
+  border-bottom: none;
+}
+
+.friend-card-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.friend-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.friend-avatar-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.friend-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.friend-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.friend-username {
+  font-size: 13px;
+  color: #0088cc;
+}
+
+/* Remove button: hidden by default, shown on desktop hover or mobile active */
+.friend-remove-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.friend-card:hover .friend-remove-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.friend-card:hover .friend-remove-btn:hover {
+  background-color: #fee2e2;
+  color: #dc3545;
+}
+
+.friend-card--active .friend-remove-btn {
+  opacity: 1;
+  pointer-events: auto;
+  color: #dc3545;
+}
+
+@media (hover: none) {
+  .friend-card:hover .friend-remove-btn {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .friend-card--active .friend-remove-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* AddFriendForm — form shell reuses .gift-form; only hint is new */
+.add-friend-hint {
+  font-size: 12px;
+  color: #999;
+  margin: 6px 0 0;
+  line-height: 1.4;
+}

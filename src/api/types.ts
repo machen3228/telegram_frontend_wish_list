@@ -42,3 +42,15 @@ export interface GiftCreateDTO {
   price?: number | null
   note?: string | null
 }
+
+export interface FriendRequest {
+  sender_tg_id: number
+  receiver_tg_id: number
+  status: string
+  created_at: string
+  sender_name: string | null
+  sender_username: string | null
+}
+
+// A friend is a full user record
+export type Friend = User

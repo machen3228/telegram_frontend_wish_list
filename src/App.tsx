@@ -6,11 +6,13 @@ import type { GiftCreateDTO } from './api/types'
 import { UserCard } from './components/UserCard'
 import { GiftCard } from './components/GiftCard'
 import { GiftForm } from './components/GiftForm'
+import { FriendsPage } from './components/FriendsPage'
 
 function App() {
   const { user, loading, error } = useAuth()
-  const { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve } = useGifts(user?.tg_id ?? null)
+  const { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve, error: giftsError } = useGifts(user?.tg_id ?? null)
   const [showForm, setShowForm] = useState(false)
+  const [currentView, setCurrentView] = useState<'main' | 'friends'>('main')
 
   const handleAddGift = async (data: GiftCreateDTO) => {
     await addGift(data)
@@ -26,11 +28,22 @@ function App() {
   if (error) return <div className="container error">{error}</div>
   if (!user) return <div className="container">No user data</div>
 
+  if (currentView === 'friends') {
+    return <FriendsPage onBack={() => setCurrentView('main')} />
+  }
+
   return (
     <div className="container">
       <UserCard user={user} />
 
+      <div className="main-nav">
+        <button className="nav-friends-btn" onClick={() => setCurrentView('friends')}>
+          Друзья
+        </button>
+      </div>
+
       <div className="gifts-section">
+        {giftsError && <div className="error" style={{ marginBottom: 12 }}>Ошибка: {giftsError}</div>}
         <div className="gifts-header">
           <h2>Мои подарки</h2>
           <div className="gifts-header-actions">
