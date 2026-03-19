@@ -7,10 +7,13 @@ export type SortOption = 'newest' | 'oldest' | 'price_desc' | 'price_asc' | 'wis
 export function useGifts(userId: number | null) {
   const [gifts, setGifts] = useState<Gift[]>([])
   const [sortBy, setSortBy] = useState<SortOption>('newest')
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (userId === null) return
-    getMyGifts(userId).then(setGifts)
+    getMyGifts(userId)
+      .then(setGifts)
+      .catch((e: unknown) => setError(e instanceof Error ? e.message : String(e)))
   }, [userId])
 
   const refresh = useCallback(async () => {
@@ -30,24 +33,41 @@ export function useGifts(userId: number | null) {
   }, [gifts, sortBy])
 
   const addGift = async (data: GiftCreateDTO) => {
-    await createGift(data)
-    await refresh()
+    try {
+      await createGift(data)
+      await refresh()
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e))
+      throw e
+    }
   }
 
   const removeGift = async (giftId: number) => {
-    await deleteGift(giftId)
-    await refresh()
+    try {
+      await deleteGift(giftId)
+      await refresh()
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e))
+    }
   }
 
   const reserve = async (giftId: number) => {
-    await reserveGift(giftId)
-    await refresh()
+    try {
+      await reserveGift(giftId)
+      await refresh()
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e))
+    }
   }
 
   const cancelReserve = async (giftId: number) => {
-    await cancelReservation(giftId)
-    await refresh()
+    try {
+      await cancelReservation(giftId)
+      await refresh()
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e))
+    }
   }
 
-  return { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve }
+  return { sortedGifts, sortBy, setSortBy, addGift, removeGift, reserve, cancelReserve, error }
 }
