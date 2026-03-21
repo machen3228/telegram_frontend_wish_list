@@ -16,7 +16,7 @@ const SORT_OPTIONS: { value: ReservationSortBy; label: string }[] = [
 ]
 
 export function MyReservationsPage({ currentUser, onBack }: MyReservationsPageProps) {
-  const { sortedReservations, sortBy, setSortBy, cancelReserve, error } = useMyReservations(currentUser)
+  const { sortedGifts, sortBy, setSortBy, cancelReserve, error } = useMyReservations()
 
   return (
     <div className="container">
@@ -37,15 +37,15 @@ export function MyReservationsPage({ currentUser, onBack }: MyReservationsPagePr
           </select>
         </div>
 
-        {sortedReservations.length === 0 ? (
+        {sortedGifts.length === 0 ? (
           <p className="no-gifts">Вы пока ничего не забронировали</p>
         ) : (
           <div className="gifts-list">
-            {sortedReservations.map(({ gift, owner }) => (
+            {sortedGifts.map(gift => (
               <GiftCard
                 key={gift.id}
                 gift={gift}
-                owner={owner}
+                owner={gift.owner}
                 isOwner={false}
                 currentUserId={currentUser.tg_id}
                 onCancelReserve={cancelReserve}

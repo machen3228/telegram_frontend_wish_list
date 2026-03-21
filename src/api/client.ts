@@ -1,4 +1,4 @@
-import type { TokenResponse, User, TelegramInitData, Gift, GiftCreateDTO, FriendRequest, Friend } from './types'
+import type { TokenResponse, User, TelegramInitData, Gift, GiftCreateDTO, FriendRequest, Friend, GiftWithOwner } from './types'
 
 const API_BASE_URL = 'http://localhost:80'
 
@@ -114,6 +114,6 @@ export async function removeFriend(friendId: number): Promise<void> {
   await authFetch(`/users/me/friends/${friendId}/delete`, { method: 'DELETE' })
 }
 
-export async function getMyReservations(): Promise<Gift[]> {
+export async function getMyReservations(): Promise<GiftWithOwner[]> {
   return (await authFetch('/gifts/my/reserve')).json()
 }
