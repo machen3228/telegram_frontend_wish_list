@@ -1,4 +1,4 @@
-import type { Gift, Friend } from '../api/types'
+import type { Gift, GiftOwnerDTO } from '../api/types'
 import { Avatar } from './Avatar'
 
 interface GiftCardProps {
@@ -8,7 +8,7 @@ interface GiftCardProps {
   onCancelReserve: (id: number) => void
   isOwner?: boolean
   currentUserId?: number
-  owner?: Friend | null
+  owner?: GiftOwnerDTO | null
 }
 
 export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner = true, currentUserId, owner }: GiftCardProps) {
@@ -19,7 +19,7 @@ export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner =
   const reservationLabel = isReservedByMe ? 'Забронировано вами' : 'Забронировано'
 
   const ownerName = owner
-    ? [owner.first_name, owner.last_name].filter(Boolean).join(' ') || owner.tg_username || String(owner.tg_id)
+    ? [owner.first_name, owner.last_name].filter(Boolean).join(' ') || null
     : null
 
   return (
@@ -28,7 +28,7 @@ export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner =
         <div className="gift-card-owner">
           <Avatar
             avatarUrl={owner.avatar_url}
-            initial={(owner.first_name ?? owner.tg_username ?? '?')[0].toUpperCase()}
+            initial={(owner.first_name ?? '?')[0].toUpperCase()}
             alt={ownerName ?? 'Owner'}
             className="gift-card-owner-avatar"
           />

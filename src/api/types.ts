@@ -54,3 +54,13 @@ export interface FriendRequest {
 
 // A friend is a full user record
 export type Friend = User
+
+export interface GiftOwnerDTO {
+  first_name: string | null
+  last_name: string | null
+  avatar_url: string | null
+}
+
+export interface GiftWithOwner extends Gift {
+  owner: GiftOwnerDTO
+}
