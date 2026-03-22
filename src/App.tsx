@@ -57,16 +57,11 @@ function App() {
 
   return (
     <div className="container">
-      <UserCard user={user} />
-
-      <div className="main-nav">
-        <button className="nav-friends-btn" onClick={() => setCurrentView('my-reservations')}>
-          Мои брони
-        </button>
-        <button className="nav-friends-btn" onClick={() => setCurrentView('friends')}>
-          Друзья
-        </button>
-      </div>
+      <UserCard
+        user={user}
+        onMyReservations={() => setCurrentView('my-reservations')}
+        onFriends={() => setCurrentView('friends')}
+      />
 
       <div className="gifts-section">
         {giftsError && <div className="error" style={{ marginBottom: 12 }}>Ошибка: {giftsError}</div>}
