@@ -66,9 +66,6 @@ export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner =
         )}
       </div>
       {gift.note && <p className="gift-note">{gift.note}</p>}
-      <p className="gift-created-at">
-        Добавлен: {new Date(gift.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
-      </p>
       {!gift.is_reserved && onReserve ? (
         <button className="gift-reserve-btn" onClick={() => onReserve(gift.id)}>
           Буду дарить
@@ -78,6 +75,9 @@ export function GiftCard({ gift, onDelete, onReserve, onCancelReserve, isOwner =
           Отменить бронь
         </button>
       ) : null}
+      <p className="gift-created-at">
+        Добавлено: {new Date(gift.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+      </p>
     </div>
   )
 }

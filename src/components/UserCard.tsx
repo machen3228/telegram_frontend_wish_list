@@ -3,9 +3,11 @@ import { Avatar } from './Avatar'
 
 interface UserCardProps {
   user: User
+  onMyReservations: () => void
+  onFriends: () => void
 }
 
-export function UserCard({ user }: UserCardProps) {
+export function UserCard({ user, onMyReservations, onFriends }: UserCardProps) {
   const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ')
 
   return (
@@ -25,6 +27,14 @@ export function UserCard({ user }: UserCardProps) {
           }}
         >
           📋
+        </button>
+      </div>
+      <div className="user-card-actions">
+        <button className="nav-friends-btn" onClick={onMyReservations}>
+          Мои брони
+        </button>
+        <button className="nav-friends-btn" onClick={onFriends}>
+          👥 Друзья
         </button>
       </div>
     </div>
