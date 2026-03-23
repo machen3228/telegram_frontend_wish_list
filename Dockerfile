@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 ARG VITE_BACKEND_URL=https://telegram-wish-list-machen.amvera.io
-RUN npm run build
+RUN echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" > .env.production && npm run build
 
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
