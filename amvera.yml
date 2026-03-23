@@ -1,18 +1,7 @@
 meta:
-  environment: node
-  toolchain:
-    name: npm
-    version: "20"
+  environment: dockerfile
 build:
   skip: false
-  additionalCommands: npm run build
-  artifacts:
-    "*": /
 run:
-  scriptName: null
-  scriptArguments: null
-  nodeArguments: null
-  command: node_modules/.bin/serve dist -l tcp://0.0.0.0:4173
-  persistenceMount: /data
-  containerPort: "4173"
-  servicePort: "4173"
+  containerPort: "80"
+  servicePort: "80"
