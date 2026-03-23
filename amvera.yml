@@ -1,0 +1,18 @@
+meta:
+  environment: node
+  toolchain:
+    name: npm
+    version: "20"
+build:
+  skip: false
+  additionalCommands: npm run build
+  artifacts:
+    "*": /
+run:
+  scriptName: null
+  scriptArguments: null
+  nodeArguments: null
+  command: npx vite preview --port 4173 --host
+  persistenceMount: /data
+  containerPort: "4173"
+  servicePort: "4173"
