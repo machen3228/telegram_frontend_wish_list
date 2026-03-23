@@ -12,7 +12,7 @@ run:
   scriptName: null
   scriptArguments: null
   nodeArguments: null
-  command: node_modules/.bin/serve dist -l 4173
+  command: node_modules/.bin/serve dist -l tcp://0.0.0.0:4173
   persistenceMount: /data
   containerPort: "4173"
   servicePort: "4173"
