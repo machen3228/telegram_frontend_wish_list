@@ -1,6 +1,7 @@
 import type { TokenResponse, User, Gift, GiftCreateDTO, FriendRequest, Friend, GiftWithOwner } from './types'
 
 const API_BASE_URL: string = import.meta.env.VITE_BACKEND_URL ?? ''
+console.log('[config] VITE_BACKEND_URL:', API_BASE_URL || '(empty — requests will go to same origin)')
 
 export class ApiError extends Error {
   status: number
