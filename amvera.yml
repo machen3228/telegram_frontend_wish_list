@@ -12,7 +12,7 @@ run:
   scriptName: null
   scriptArguments: null
   nodeArguments: null
-  command: npx vite preview --port 4173 --host
+  command: npx serve dist -l 4173
   persistenceMount: /data
   containerPort: "4173"
   servicePort: "4173"
