@@ -1,6 +1,6 @@
 import type { TokenResponse, User, Gift, GiftCreateDTO, FriendRequest, Friend, GiftWithOwner } from './types'
 
-const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? ''
+const API_BASE_URL: string = import.meta.env.VITE_BACKEND_URL ?? ''
 
 export class ApiError extends Error {
   status: number
