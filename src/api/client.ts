@@ -1,6 +1,6 @@
-import type { TokenResponse, User, TelegramInitData, Gift, GiftCreateDTO, FriendRequest, Friend, GiftWithOwner } from './types'
+import type { TokenResponse, User, Gift, GiftCreateDTO, FriendRequest, Friend, GiftWithOwner } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export class ApiError extends Error {
   status: number
@@ -9,13 +9,6 @@ export class ApiError extends Error {
     this.name = 'ApiError'
     this.status = status
   }
-}
-
-const MOCK_USER: TelegramInitData = {
-  id: 12345,
-  username: 'testusername',
-  first_name: 'Test',
-  last_name: 'User',
 }
 
 function getToken(): string | null {
@@ -51,10 +44,11 @@ async function authFetch(url: string, options: RequestInit = {}): Promise<Respon
 }
 
 export async function login(): Promise<TokenResponse> {
-  const response = await fetch(`${API_BASE_URL}/users/auth-dev`, {
+  const initData = window.Telegram?.WebApp?.initData
+  if (!initData) throw new Error('Telegram initData is not available. Open this app inside Telegram.')
+  const response = await fetch(`${API_BASE_URL}/users/auth`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(MOCK_USER),
+    headers: { 'X-Telegram-Init-Data': initData },
   })
   if (!response.ok) throw new Error(`Login failed: ${response.status}`)
   const data: TokenResponse = await response.json()

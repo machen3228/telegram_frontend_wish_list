@@ -15,7 +15,11 @@ interface FriendsPageProps {
 export function FriendsPage({ onBack, onFriendClick }: FriendsPageProps) {
   const { requests, friends, error, accept, reject, remove, addFriend } = useFriends()
   const [showAddForm, setShowAddForm] = useState(false)
-  const [activeCardId, setActiveCardId] = useState<number | null>(null)
+
+  const handleRemoveFriend = async (friendId: number) => {
+    if (!confirm('Вы уверены, что хотите удалить этого друга?')) return
+    await remove(friendId)
+  }
 
   const handleAddFriend = async (receiverId: number) => {
     await addFriend(receiverId)
@@ -62,9 +66,7 @@ export function FriendsPage({ onBack, onFriendClick }: FriendsPageProps) {
             <FriendCard
               key={f.tg_id}
               friend={f}
-              isActive={activeCardId === f.tg_id}
-              onActivate={setActiveCardId}
-              onRemove={remove}
+              onRemove={handleRemoveFriend}
               onClick={() => onFriendClick(f)}
             />
           ))
