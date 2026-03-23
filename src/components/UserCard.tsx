@@ -3,8 +3,8 @@ import { Avatar } from './Avatar'
 
 interface UserCardProps {
   user: User
-  onMyReservations: () => void
-  onFriends: () => void
+  onMyReservations?: () => void
+  onFriends?: () => void
 }
 
 export function UserCard({ user, onMyReservations, onFriends }: UserCardProps) {
@@ -29,14 +29,20 @@ export function UserCard({ user, onMyReservations, onFriends }: UserCardProps) {
           📋
         </button>
       </div>
-      <div className="user-card-actions">
-        <button className="nav-friends-btn" onClick={onMyReservations}>
-          Мои брони
-        </button>
-        <button className="nav-friends-btn" onClick={onFriends}>
-          👥 Друзья
-        </button>
-      </div>
+      {(onMyReservations || onFriends) && (
+        <div className="user-card-actions">
+          {onMyReservations && (
+            <button className="nav-friends-btn" onClick={onMyReservations}>
+              Мои брони
+            </button>
+          )}
+          {onFriends && (
+            <button className="nav-friends-btn" onClick={onFriends}>
+              👥 Друзья
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
