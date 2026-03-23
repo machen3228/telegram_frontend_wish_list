@@ -21,6 +21,16 @@ export interface TelegramInitData {
   photo_url?: string
 }
 
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        initData: string
+      }
+    }
+  }
+}
+
 export interface Gift {
   id: number
   user_id: number

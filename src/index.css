@@ -244,6 +244,12 @@ body {
   background-color: #fee2e2;
 }
 
+@media (hover: none) {
+  .gift-delete-btn {
+    opacity: 1;
+  }
+}
+
 .gift-name {
   font-size: 16px;
   font-weight: 600;
@@ -784,21 +790,12 @@ body {
   color: #dc3545;
 }
 
-.friend-card--active .friend-remove-btn {
-  opacity: 1;
-  pointer-events: auto;
-  color: #dc3545;
-}
 
 @media (hover: none) {
-  .friend-card:hover .friend-remove-btn {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .friend-card--active .friend-remove-btn {
+  .friend-remove-btn {
     opacity: 1;
     pointer-events: auto;
+    color: #bbb;
   }
 }
 
