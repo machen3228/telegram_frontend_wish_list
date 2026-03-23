@@ -46,7 +46,9 @@ async function authFetch(url: string, options: RequestInit = {}): Promise<Respon
 export async function login(): Promise<TokenResponse> {
   const initData = window.Telegram?.WebApp?.initData
   if (!initData) throw new Error('Telegram initData is not available. Open this app inside Telegram.')
-  const response = await fetch(`${API_BASE_URL}/users/auth`, {
+  const loginUrl = `${API_BASE_URL}/users/auth`
+  console.log('[login] POST', loginUrl, '| initData length:', initData.length)
+  const response = await fetch(loginUrl, {
     method: 'POST',
     headers: { 'X-Telegram-Init-Data': initData },
   })
