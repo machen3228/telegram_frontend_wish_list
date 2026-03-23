@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-ARG VITE_BACKEND_URL
+ARG VITE_BACKEND_URL=amvera-machen-run-telegram-wish-list
 RUN npm run build
 
 FROM nginx:alpine
